@@ -93,9 +93,3 @@ client.put("world", "ray")
 assert client.get("world") == "ray"
 print("Run the simple kv store successfully!")
 exit(0)
-
-
-
-
-
-
