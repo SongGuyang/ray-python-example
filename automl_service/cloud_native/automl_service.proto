@@ -1,0 +1,66 @@
+
+message DoAutoMLRequest {
+  required string data_source = 1; 
+  required string data_partition = 2;
+  repeated int32 model_season_lengths = 3;
+  repeated string models = 4;
+}
+
+message DoAutoMLReply {
+  required bool success = 1;
+  optional int32 task_id = 2;
+  optional string message = 3;
+}
+
+message GetResultRequest {
+  required int32 task_id = 1;
+}
+
+message GetResultReply {
+  required bool success = 1;
+  optional string result = 2;
+}
+
+// Service from client to proxy
+service AutoMLService {
+  rpc DoAutoML (DoAutoMLRequest) returns (DoAutoMLReply) {}
+  rpc GetResult (GetResultRequest) returns (GetResultReply) {}
+}
+
+message TrainRequest {
+  required string data_source = 1; 
+  required string data_partition = 2;
+  repeated int32 model_season_lengths = 3;
+  repeated string models = 4;
+}
+
+message TrainReply {
+  required bool success = 1;
+  optional string result = 2;
+}
+
+// Service from proxy to trainer
+service TrainerService {
+  rpc Train (TrainRequest) returns (TrainReply) {}
+}
+
+message SingleTrainRequest {
+    required bytes model = 1;
+    required bytes df = 2;
+    required bytes train_indices = 3;
+    required bytes test_indices = 4;
+    required string label_column = 5;
+    required bytes metrics = 6;
+    required string freq = 7;
+}
+
+message SingleTrainReply {
+  required bool success = 1;
+  map<string, double> result = 2;
+}
+
+// Service from trainer to worker
+service WorkerService {
+  rpc SingleTrain (SingleTrainRequest) returns (SingleTrainReply) {}
+}
+

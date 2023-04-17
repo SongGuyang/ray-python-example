@@ -170,7 +170,7 @@ def get_m5_partition(source: str, unique_id: str):
 @ray.remote(runtime_env={
     "pip": ["statsforecast", "scikit-learn"]
 })
-class AutoMLTrainer:
+class Trainer:
     def __init__(self, data_source, data_partition, model_season_length, model):
         self._data_source = data_source
         self._data_partition = data_partition
@@ -200,14 +200,13 @@ class AutoMLTrainer:
 
 
 @ray.remote
-class AutoMLMaster:
+class Proxy:
 
     class Context:
         def __init__(self, actor_handle, result_object, result = None):
             self.actor_handle = actor_handle
             self.result_object = result_object
             self.result = result
-
 
     def __init__(self):
         self._next_task_id = 0
@@ -231,11 +230,11 @@ class AutoMLMaster:
             await asyncio.sleep(5)
 
     async def do_auto_ml(self, data_source, data_partition, model_season_length, model):
-        actor_handle = AutoMLTrainer.remote(data_source, data_partition, model_season_length, model)
+        actor_handle = Trainer.remote(data_source, data_partition, model_season_length, model)
         result_object = actor_handle.train.remote()
         task_id = self._next_task_id
         self._next_task_id += 1
-        self._tasks[task_id] = AutoMLMaster.Context(actor_handle, result_object)
+        self._tasks[task_id] = Proxy.Context(actor_handle, result_object)
         return task_id
     
     async def get_result(self, task_id):
@@ -246,7 +245,7 @@ class AutoMLMaster:
 
 ray.init(ignore_reinit_error=True)
 
-master = AutoMLMaster.remote()
+master = Proxy.remote()
 task_id = ray.get(master.do_auto_ml.remote(
     "s3://anonymous@m5-benchmarks/data/train/target.parquet", 
     "FOODS_1_001_CA_1", 
