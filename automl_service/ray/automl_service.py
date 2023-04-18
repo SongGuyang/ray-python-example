@@ -245,8 +245,8 @@ class Proxy:
 
 ray.init(ignore_reinit_error=True)
 
-master = Proxy.remote()
-task_id = ray.get(master.do_auto_ml.remote(
+proxy = Proxy.remote()
+task_id = ray.get(proxy.do_auto_ml.remote(
     "s3://anonymous@m5-benchmarks/data/train/target.parquet", 
     "FOODS_1_001_CA_1", 
     [6, 7],
@@ -254,7 +254,7 @@ task_id = ray.get(master.do_auto_ml.remote(
 ))
 
 while True:
-    result = ray.get(master.get_result.remote(task_id))
+    result = ray.get(proxy.get_result.remote(task_id))
     if result:
         logger.info(f"The task has already finished, the result {result}.")
         break
