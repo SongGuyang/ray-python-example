@@ -74,22 +74,22 @@ class SingleTrainRequest(_message.Message):
     train_indices: bytes
     def __init__(self, model: _Optional[bytes] = ..., df: _Optional[bytes] = ..., train_indices: _Optional[bytes] = ..., test_indices: _Optional[bytes] = ..., label_column: _Optional[str] = ..., metrics: _Optional[bytes] = ..., freq: _Optional[str] = ...) -> None: ...
 
-class TrainReply(_message.Message):
-    __slots__ = ["result", "success"]
-    RESULT_FIELD_NUMBER: _ClassVar[int]
-    SUCCESS_FIELD_NUMBER: _ClassVar[int]
-    result: str
-    success: bool
-    def __init__(self, success: bool = ..., result: _Optional[str] = ...) -> None: ...
-
-class TrainRequest(_message.Message):
-    __slots__ = ["data_partition", "data_source", "model_season_lengths", "models"]
+class TrainerRegisterReply(_message.Message):
+    __slots__ = ["data_partition", "data_source", "model_season_lengths", "models", "success"]
     DATA_PARTITION_FIELD_NUMBER: _ClassVar[int]
     DATA_SOURCE_FIELD_NUMBER: _ClassVar[int]
     MODELS_FIELD_NUMBER: _ClassVar[int]
     MODEL_SEASON_LENGTHS_FIELD_NUMBER: _ClassVar[int]
+    SUCCESS_FIELD_NUMBER: _ClassVar[int]
     data_partition: str
     data_source: str
-    model_season_lengths: _containers.RepeatedScalarFieldContainer[int]
-    models: _containers.RepeatedScalarFieldContainer[str]
-    def __init__(self, data_source: _Optional[str] = ..., data_partition: _Optional[str] = ..., model_season_lengths: _Optional[_Iterable[int]] = ..., models: _Optional[_Iterable[str]] = ...) -> None: ...
+    model_season_lengths: int
+    models: str
+    success: bool
+    def __init__(self, success: bool = ..., data_source: _Optional[str] = ..., data_partition: _Optional[str] = ..., model_season_lengths: _Optional[int] = ..., models: _Optional[str] = ...) -> None: ...
+
+class TrainerRegisterRequest(_message.Message):
+    __slots__ = ["index"]
+    INDEX_FIELD_NUMBER: _ClassVar[int]
+    index: int
+    def __init__(self, index: _Optional[int] = ...) -> None: ...

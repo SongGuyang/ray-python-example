@@ -1,0 +1,67 @@
+syntax = "proto3";
+
+message DoAutoMLRequest {
+  string data_source = 1; 
+  string data_partition = 2;
+  repeated int32 model_season_lengths = 3;
+  repeated string models = 4;
+}
+
+message DoAutoMLReply {
+  bool success = 1;
+  optional int32 task_id = 2;
+  optional string message = 3;
+}
+
+message GetResultRequest {
+  int32 task_id = 1;
+}
+
+message GetResultReply {
+  bool success = 1;
+  optional string result = 2;
+}
+
+// Service from client to proxy
+service AutoMLService {
+  rpc DoAutoML (DoAutoMLRequest) returns (DoAutoMLReply) {}
+  rpc GetResult (GetResultRequest) returns (GetResultReply) {}
+}
+
+message TrainerRegisterRequest {
+  int32 index = 1;
+}
+
+message TrainerRegisterReply {
+  bool success = 1;
+  optional string data_source = 2; 
+  optional string data_partition = 3;
+  optional int32 model_season_lengths = 4;
+  optional string models = 5;
+}
+
+// Service from trainer to proxy
+service TrainerRegisterService {
+  rpc TrainerRegister (TrainerRegisterRequest) returns (TrainerRegisterReply) {}
+}
+
+message SingleTrainRequest {
+    bytes model = 1;
+    bytes df = 2;
+    bytes train_indices = 3;
+    bytes test_indices = 4;
+    string label_column = 5;
+    bytes metrics = 6;
+    string freq = 7;
+}
+
+message SingleTrainReply {
+  bool success = 1;
+  map<string, double> result = 2;
+}
+
+// Service from trainer to worker
+service WorkerService {
+  rpc SingleTrain (SingleTrainRequest) returns (SingleTrainReply) {}
+}
+

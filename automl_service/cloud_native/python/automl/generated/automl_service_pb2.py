@@ -13,7 +13,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x14\x61utoml_service.proto\"l\n\x0f\x44oAutoMLRequest\x12\x13\n\x0b\x64\x61ta_source\x18\x01 \x02(\t\x12\x16\n\x0e\x64\x61ta_partition\x18\x02 \x02(\t\x12\x1c\n\x14model_season_lengths\x18\x03 \x03(\x05\x12\x0e\n\x06models\x18\x04 \x03(\t\"B\n\rDoAutoMLReply\x12\x0f\n\x07success\x18\x01 \x02(\x08\x12\x0f\n\x07task_id\x18\x02 \x01(\x05\x12\x0f\n\x07message\x18\x03 \x01(\t\"#\n\x10GetResultRequest\x12\x0f\n\x07task_id\x18\x01 \x02(\x05\"1\n\x0eGetResultReply\x12\x0f\n\x07success\x18\x01 \x02(\x08\x12\x0e\n\x06result\x18\x02 \x01(\t\"i\n\x0cTrainRequest\x12\x13\n\x0b\x64\x61ta_source\x18\x01 \x02(\t\x12\x16\n\x0e\x64\x61ta_partition\x18\x02 \x02(\t\x12\x1c\n\x14model_season_lengths\x18\x03 \x03(\x05\x12\x0e\n\x06models\x18\x04 \x03(\t\"-\n\nTrainReply\x12\x0f\n\x07success\x18\x01 \x02(\x08\x12\x0e\n\x06result\x18\x02 \x01(\t\"\x91\x01\n\x12SingleTrainRequest\x12\r\n\x05model\x18\x01 \x02(\x0c\x12\n\n\x02\x64\x66\x18\x02 \x02(\x0c\x12\x15\n\rtrain_indices\x18\x03 \x02(\x0c\x12\x14\n\x0ctest_indices\x18\x04 \x02(\x0c\x12\x14\n\x0clabel_column\x18\x05 \x02(\t\x12\x0f\n\x07metrics\x18\x06 \x02(\x0c\x12\x0c\n\x04\x66req\x18\x07 \x02(\t\"\x81\x01\n\x10SingleTrainReply\x12\x0f\n\x07success\x18\x01 \x02(\x08\x12-\n\x06result\x18\x02 \x03(\x0b\x32\x1d.SingleTrainReply.ResultEntry\x1a-\n\x0bResultEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x01:\x02\x38\x01\x32r\n\rAutoMLService\x12.\n\x08\x44oAutoML\x12\x10.DoAutoMLRequest\x1a\x0e.DoAutoMLReply\"\x00\x12\x31\n\tGetResult\x12\x11.GetResultRequest\x1a\x0f.GetResultReply\"\x00\x32\x37\n\x0eTrainerService\x12%\n\x05Train\x12\r.TrainRequest\x1a\x0b.TrainReply\"\x00\x32H\n\rWorkerService\x12\x37\n\x0bSingleTrain\x12\x13.SingleTrainRequest\x1a\x11.SingleTrainReply\"\x00')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x14\x61utoml_service.proto\"l\n\x0f\x44oAutoMLRequest\x12\x13\n\x0b\x64\x61ta_source\x18\x01 \x01(\t\x12\x16\n\x0e\x64\x61ta_partition\x18\x02 \x01(\t\x12\x1c\n\x14model_season_lengths\x18\x03 \x03(\x05\x12\x0e\n\x06models\x18\x04 \x03(\t\"d\n\rDoAutoMLReply\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x14\n\x07task_id\x18\x02 \x01(\x05H\x00\x88\x01\x01\x12\x14\n\x07message\x18\x03 \x01(\tH\x01\x88\x01\x01\x42\n\n\x08_task_idB\n\n\x08_message\"#\n\x10GetResultRequest\x12\x0f\n\x07task_id\x18\x01 \x01(\x05\"A\n\x0eGetResultReply\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x13\n\x06result\x18\x02 \x01(\tH\x00\x88\x01\x01\x42\t\n\x07_result\"\'\n\x16TrainerRegisterRequest\x12\r\n\x05index\x18\x01 \x01(\x05\"\xdd\x01\n\x14TrainerRegisterReply\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x18\n\x0b\x64\x61ta_source\x18\x02 \x01(\tH\x00\x88\x01\x01\x12\x1b\n\x0e\x64\x61ta_partition\x18\x03 \x01(\tH\x01\x88\x01\x01\x12!\n\x14model_season_lengths\x18\x04 \x01(\x05H\x02\x88\x01\x01\x12\x13\n\x06models\x18\x05 \x01(\tH\x03\x88\x01\x01\x42\x0e\n\x0c_data_sourceB\x11\n\x0f_data_partitionB\x17\n\x15_model_season_lengthsB\t\n\x07_models\"\x91\x01\n\x12SingleTrainRequest\x12\r\n\x05model\x18\x01 \x01(\x0c\x12\n\n\x02\x64\x66\x18\x02 \x01(\x0c\x12\x15\n\rtrain_indices\x18\x03 \x01(\x0c\x12\x14\n\x0ctest_indices\x18\x04 \x01(\x0c\x12\x14\n\x0clabel_column\x18\x05 \x01(\t\x12\x0f\n\x07metrics\x18\x06 \x01(\x0c\x12\x0c\n\x04\x66req\x18\x07 \x01(\t\"\x81\x01\n\x10SingleTrainReply\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12-\n\x06result\x18\x02 \x03(\x0b\x32\x1d.SingleTrainReply.ResultEntry\x1a-\n\x0bResultEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x01:\x02\x38\x01\x32r\n\rAutoMLService\x12.\n\x08\x44oAutoML\x12\x10.DoAutoMLRequest\x1a\x0e.DoAutoMLReply\"\x00\x12\x31\n\tGetResult\x12\x11.GetResultRequest\x1a\x0f.GetResultReply\"\x00\x32]\n\x16TrainerRegisterService\x12\x43\n\x0fTrainerRegister\x12\x17.TrainerRegisterRequest\x1a\x15.TrainerRegisterReply\"\x00\x32H\n\rWorkerService\x12\x37\n\x0bSingleTrain\x12\x13.SingleTrainRequest\x1a\x11.SingleTrainReply\"\x00\x62\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'automl_service_pb2', globals())
@@ -25,25 +25,25 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _DOAUTOMLREQUEST._serialized_start=24
   _DOAUTOMLREQUEST._serialized_end=132
   _DOAUTOMLREPLY._serialized_start=134
-  _DOAUTOMLREPLY._serialized_end=200
-  _GETRESULTREQUEST._serialized_start=202
-  _GETRESULTREQUEST._serialized_end=237
-  _GETRESULTREPLY._serialized_start=239
-  _GETRESULTREPLY._serialized_end=288
-  _TRAINREQUEST._serialized_start=290
-  _TRAINREQUEST._serialized_end=395
-  _TRAINREPLY._serialized_start=397
-  _TRAINREPLY._serialized_end=442
-  _SINGLETRAINREQUEST._serialized_start=445
-  _SINGLETRAINREQUEST._serialized_end=590
-  _SINGLETRAINREPLY._serialized_start=593
-  _SINGLETRAINREPLY._serialized_end=722
-  _SINGLETRAINREPLY_RESULTENTRY._serialized_start=677
-  _SINGLETRAINREPLY_RESULTENTRY._serialized_end=722
-  _AUTOMLSERVICE._serialized_start=724
-  _AUTOMLSERVICE._serialized_end=838
-  _TRAINERSERVICE._serialized_start=840
-  _TRAINERSERVICE._serialized_end=895
-  _WORKERSERVICE._serialized_start=897
-  _WORKERSERVICE._serialized_end=969
+  _DOAUTOMLREPLY._serialized_end=234
+  _GETRESULTREQUEST._serialized_start=236
+  _GETRESULTREQUEST._serialized_end=271
+  _GETRESULTREPLY._serialized_start=273
+  _GETRESULTREPLY._serialized_end=338
+  _TRAINERREGISTERREQUEST._serialized_start=340
+  _TRAINERREGISTERREQUEST._serialized_end=379
+  _TRAINERREGISTERREPLY._serialized_start=382
+  _TRAINERREGISTERREPLY._serialized_end=603
+  _SINGLETRAINREQUEST._serialized_start=606
+  _SINGLETRAINREQUEST._serialized_end=751
+  _SINGLETRAINREPLY._serialized_start=754
+  _SINGLETRAINREPLY._serialized_end=883
+  _SINGLETRAINREPLY_RESULTENTRY._serialized_start=838
+  _SINGLETRAINREPLY_RESULTENTRY._serialized_end=883
+  _AUTOMLSERVICE._serialized_start=885
+  _AUTOMLSERVICE._serialized_end=999
+  _TRAINERREGISTERSERVICE._serialized_start=1001
+  _TRAINERREGISTERSERVICE._serialized_end=1094
+  _WORKERSERVICE._serialized_start=1096
+  _WORKERSERVICE._serialized_end=1168
 # @@protoc_insertion_point(module_scope)

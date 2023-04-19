@@ -9,6 +9,9 @@ from generated import (
     automl_service_pb2,
     automl_service_pb2_grpc,
 )
+
+from operator import OperatorClient
+
 import logging
 import sys
 
@@ -36,16 +39,26 @@ def get_or_create_event_loop() -> asyncio.BaseEventLoop:
 
     return asyncio.get_event_loop()
 
-class Proxy(automl_service_pb2_grpc.AutoMLServiceServicer):
+
+class Proxy(automl_service_pb2_grpc.AutoMLServiceServicer,
+            automl_service_pb2_grpc.TrainerRegisterServiceServicer):
+    class Context:
+        def __init__(self, trainer_id, result = None):
+            self.trainer_id = trainer_id
+            self.result = result
+
     def __init__(
         self,
-        grpc_port: str,
+        grpc_port: int,
+        operator_address: str,
     ):
 
         self.server = aiogrpc.server(options=(("grpc.so_reuseport", 0),))
         grpc_ip = "0.0.0.0"
         self.grpc_port = self.server.add_insecure_port(f"{grpc_ip}:{grpc_port}")
         logger.info("Proxy grpc address: %s:%s", grpc_ip, self.grpc_port)
+        self._operator_client = OperatorClient(operator_address)
+        self._tasks
     
     async def DoAutoML(self, request, context):
         return automl_service_pb2.DoAutoMLReply(
@@ -54,13 +67,21 @@ class Proxy(automl_service_pb2_grpc.AutoMLServiceServicer):
             message="test",
         )
     
-
     async def GetResult(self, request, context):
         return automl_service_pb2.GetResultReply(
             success=True,
             result="test",
         )
 
+    async def TrainerRegister(self, request, context):
+        return automl_service_pb2.TrainerRegisterReply(
+            success=True,
+            data_source="",
+            data_partition="",
+            model_season_lengths=[3, 4],
+            models=["ZZZ"],
+            message="test",
+        )
 
     async def run(self):
 
@@ -71,6 +92,10 @@ class Proxy(automl_service_pb2_grpc.AutoMLServiceServicer):
             self, self.server
         )
 
+        automl_service_pb2_grpc.add_TrainerRegisterServiceServicer_to_server(
+            self, self.server
+        )
+
         await self.server.wait_for_termination()
 
 if __name__ == "__main__":
@@ -78,10 +103,13 @@ if __name__ == "__main__":
     parser.add_argument(
         "--port", required=True, type=int, help="The grpc port."
     )
+    parser.add_argument(
+        "--operator-address", required=True, type=str, help="The automl operator address."
+    )
 
     args = parser.parse_args()
 
-    proxy = Proxy(args.port)
+    proxy = Proxy(args.port, args.operator_address)
 
     loop = get_or_create_event_loop()
 

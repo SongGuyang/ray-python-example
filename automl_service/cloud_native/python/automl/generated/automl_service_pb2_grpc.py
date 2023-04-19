@@ -2,7 +2,7 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-from . import automl_service_pb2 as automl__service__pb2
+import generated.automl_service_pb2 as automl__service__pb2
 
 
 class AutoMLServiceStub(object):
@@ -102,8 +102,8 @@ class AutoMLService(object):
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
 
-class TrainerServiceStub(object):
-    """Service from proxy to trainer
+class TrainerRegisterServiceStub(object):
+    """Service from trainer to proxy
     """
 
     def __init__(self, channel):
@@ -112,44 +112,44 @@ class TrainerServiceStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.Train = channel.unary_unary(
-                '/TrainerService/Train',
-                request_serializer=automl__service__pb2.TrainRequest.SerializeToString,
-                response_deserializer=automl__service__pb2.TrainReply.FromString,
+        self.TrainerRegister = channel.unary_unary(
+                '/TrainerRegisterService/TrainerRegister',
+                request_serializer=automl__service__pb2.TrainerRegisterRequest.SerializeToString,
+                response_deserializer=automl__service__pb2.TrainerRegisterReply.FromString,
                 )
 
 
-class TrainerServiceServicer(object):
-    """Service from proxy to trainer
+class TrainerRegisterServiceServicer(object):
+    """Service from trainer to proxy
     """
 
-    def Train(self, request, context):
+    def TrainerRegister(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
 
-def add_TrainerServiceServicer_to_server(servicer, server):
+def add_TrainerRegisterServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'Train': grpc.unary_unary_rpc_method_handler(
-                    servicer.Train,
-                    request_deserializer=automl__service__pb2.TrainRequest.FromString,
-                    response_serializer=automl__service__pb2.TrainReply.SerializeToString,
+            'TrainerRegister': grpc.unary_unary_rpc_method_handler(
+                    servicer.TrainerRegister,
+                    request_deserializer=automl__service__pb2.TrainerRegisterRequest.FromString,
+                    response_serializer=automl__service__pb2.TrainerRegisterReply.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'TrainerService', rpc_method_handlers)
+            'TrainerRegisterService', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
 
 
  # This class is part of an EXPERIMENTAL API.
-class TrainerService(object):
-    """Service from proxy to trainer
+class TrainerRegisterService(object):
+    """Service from trainer to proxy
     """
 
     @staticmethod
-    def Train(request,
+    def TrainerRegister(request,
             target,
             options=(),
             channel_credentials=None,
@@ -159,9 +159,9 @@ class TrainerService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/TrainerService/Train',
-            automl__service__pb2.TrainRequest.SerializeToString,
-            automl__service__pb2.TrainReply.FromString,
+        return grpc.experimental.unary_unary(request, target, '/TrainerRegisterService/TrainerRegister',
+            automl__service__pb2.TrainerRegisterRequest.SerializeToString,
+            automl__service__pb2.TrainerRegisterReply.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
