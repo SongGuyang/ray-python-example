@@ -2,7 +2,7 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-import generated.automl_service_pb2 as automl__service__pb2
+import automl_service_pb2 as automl__service__pb2
 
 
 class AutoMLServiceStub(object):
@@ -112,10 +112,15 @@ class TrainerRegisterServiceStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.TrainerRegister = channel.unary_unary(
-                '/TrainerRegisterService/TrainerRegister',
-                request_serializer=automl__service__pb2.TrainerRegisterRequest.SerializeToString,
-                response_deserializer=automl__service__pb2.TrainerRegisterReply.FromString,
+        self.Register = channel.unary_unary(
+                '/TrainerRegisterService/Register',
+                request_serializer=automl__service__pb2.RegisterRequest.SerializeToString,
+                response_deserializer=automl__service__pb2.RegisterReply.FromString,
+                )
+        self.ReportResult = channel.unary_unary(
+                '/TrainerRegisterService/ReportResult',
+                request_serializer=automl__service__pb2.ReportResultRequest.SerializeToString,
+                response_deserializer=automl__service__pb2.ReportResultReply.FromString,
                 )
 
 
@@ -123,7 +128,13 @@ class TrainerRegisterServiceServicer(object):
     """Service from trainer to proxy
     """
 
-    def TrainerRegister(self, request, context):
+    def Register(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ReportResult(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -132,10 +143,15 @@ class TrainerRegisterServiceServicer(object):
 
 def add_TrainerRegisterServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'TrainerRegister': grpc.unary_unary_rpc_method_handler(
-                    servicer.TrainerRegister,
-                    request_deserializer=automl__service__pb2.TrainerRegisterRequest.FromString,
-                    response_serializer=automl__service__pb2.TrainerRegisterReply.SerializeToString,
+            'Register': grpc.unary_unary_rpc_method_handler(
+                    servicer.Register,
+                    request_deserializer=automl__service__pb2.RegisterRequest.FromString,
+                    response_serializer=automl__service__pb2.RegisterReply.SerializeToString,
+            ),
+            'ReportResult': grpc.unary_unary_rpc_method_handler(
+                    servicer.ReportResult,
+                    request_deserializer=automl__service__pb2.ReportResultRequest.FromString,
+                    response_serializer=automl__service__pb2.ReportResultReply.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -149,7 +165,7 @@ class TrainerRegisterService(object):
     """
 
     @staticmethod
-    def TrainerRegister(request,
+    def Register(request,
             target,
             options=(),
             channel_credentials=None,
@@ -159,15 +175,32 @@ class TrainerRegisterService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/TrainerRegisterService/TrainerRegister',
-            automl__service__pb2.TrainerRegisterRequest.SerializeToString,
-            automl__service__pb2.TrainerRegisterReply.FromString,
+        return grpc.experimental.unary_unary(request, target, '/TrainerRegisterService/Register',
+            automl__service__pb2.RegisterRequest.SerializeToString,
+            automl__service__pb2.RegisterReply.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def ReportResult(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/TrainerRegisterService/ReportResult',
+            automl__service__pb2.ReportResultRequest.SerializeToString,
+            automl__service__pb2.ReportResultReply.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
 
-class WorkerServiceStub(object):
-    """Service from trainer to worker
+class WorkerRegisterServiceStub(object):
+    """Service from worker to trainer
     """
 
     def __init__(self, channel):
@@ -176,44 +209,60 @@ class WorkerServiceStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.SingleTrain = channel.unary_unary(
-                '/WorkerService/SingleTrain',
-                request_serializer=automl__service__pb2.SingleTrainRequest.SerializeToString,
-                response_deserializer=automl__service__pb2.SingleTrainReply.FromString,
+        self.WorkerRegister = channel.unary_unary(
+                '/WorkerRegisterService/WorkerRegister',
+                request_serializer=automl__service__pb2.WorkerRegisterRequest.SerializeToString,
+                response_deserializer=automl__service__pb2.WorkerRegisterReply.FromString,
+                )
+        self.WorkerReportResult = channel.unary_unary(
+                '/WorkerRegisterService/WorkerReportResult',
+                request_serializer=automl__service__pb2.WorkerReportResultRequest.SerializeToString,
+                response_deserializer=automl__service__pb2.WorkerReportResultReply.FromString,
                 )
 
 
-class WorkerServiceServicer(object):
-    """Service from trainer to worker
+class WorkerRegisterServiceServicer(object):
+    """Service from worker to trainer
     """
 
-    def SingleTrain(self, request, context):
+    def WorkerRegister(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def WorkerReportResult(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
 
-def add_WorkerServiceServicer_to_server(servicer, server):
+def add_WorkerRegisterServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'SingleTrain': grpc.unary_unary_rpc_method_handler(
-                    servicer.SingleTrain,
-                    request_deserializer=automl__service__pb2.SingleTrainRequest.FromString,
-                    response_serializer=automl__service__pb2.SingleTrainReply.SerializeToString,
+            'WorkerRegister': grpc.unary_unary_rpc_method_handler(
+                    servicer.WorkerRegister,
+                    request_deserializer=automl__service__pb2.WorkerRegisterRequest.FromString,
+                    response_serializer=automl__service__pb2.WorkerRegisterReply.SerializeToString,
+            ),
+            'WorkerReportResult': grpc.unary_unary_rpc_method_handler(
+                    servicer.WorkerReportResult,
+                    request_deserializer=automl__service__pb2.WorkerReportResultRequest.FromString,
+                    response_serializer=automl__service__pb2.WorkerReportResultReply.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'WorkerService', rpc_method_handlers)
+            'WorkerRegisterService', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
 
 
  # This class is part of an EXPERIMENTAL API.
-class WorkerService(object):
-    """Service from trainer to worker
+class WorkerRegisterService(object):
+    """Service from worker to trainer
     """
 
     @staticmethod
-    def SingleTrain(request,
+    def WorkerRegister(request,
             target,
             options=(),
             channel_credentials=None,
@@ -223,8 +272,25 @@ class WorkerService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/WorkerService/SingleTrain',
-            automl__service__pb2.SingleTrainRequest.SerializeToString,
-            automl__service__pb2.SingleTrainReply.FromString,
+        return grpc.experimental.unary_unary(request, target, '/WorkerRegisterService/WorkerRegister',
+            automl__service__pb2.WorkerRegisterRequest.SerializeToString,
+            automl__service__pb2.WorkerRegisterReply.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def WorkerReportResult(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/WorkerRegisterService/WorkerReportResult',
+            automl__service__pb2.WorkerReportResultRequest.SerializeToString,
+            automl__service__pb2.WorkerReportResultReply.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

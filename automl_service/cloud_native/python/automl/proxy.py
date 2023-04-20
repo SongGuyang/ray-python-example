@@ -5,12 +5,13 @@ try:
 except ImportError:
     from grpc.experimental import aio as aiogrpc
 
-from generated import (
+from automl.generated import (
     automl_service_pb2,
     automl_service_pb2_grpc,
 )
 
-from operator import OperatorClient
+from automl.operator import OperatorClient
+from automl.utils import get_or_create_event_loop
 
 import logging
 import sys
@@ -18,38 +19,21 @@ import sys
 logging.basicConfig(stream=sys.stdout, format='%(asctime)s %(message)s', level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
-def get_or_create_event_loop() -> asyncio.BaseEventLoop:
-    import sys
-
-    vers_info = sys.version_info
-    if vers_info.major >= 3 and vers_info.minor >= 10:
-        # This follows the implementation of the deprecating `get_event_loop`
-        # in python3.10's asyncio. See python3.10/asyncio/events.py
-        # _get_event_loop()
-        loop = None
-        try:
-            loop = asyncio.get_running_loop()
-            assert loop is not None
-            return loop
-        except RuntimeError as e:
-            # No running loop, relying on the error message as for now to
-            # differentiate runtime errors.
-            assert "no running event loop" in str(e)
-            return asyncio.get_event_loop_policy().get_event_loop()
-
-    return asyncio.get_event_loop()
-
-
 class Proxy(automl_service_pb2_grpc.AutoMLServiceServicer,
             automl_service_pb2_grpc.TrainerRegisterServiceServicer):
     class Context:
-        def __init__(self, trainer_id, result = None):
+        def __init__(self, data_source, data_partition, model_season_lengths, models, trainer_id, result = None):
+            self.data_source = data_source
+            self.data_partition = data_partition
+            self.model_season_lengths = model_season_lengths
+            self.models = models
             self.trainer_id = trainer_id
             self.result = result
 
     def __init__(
         self,
         grpc_port: int,
+        host_name: str,
         operator_address: str,
     ):
 
@@ -57,30 +41,55 @@ class Proxy(automl_service_pb2_grpc.AutoMLServiceServicer,
         grpc_ip = "0.0.0.0"
         self.grpc_port = self.server.add_insecure_port(f"{grpc_ip}:{grpc_port}")
         logger.info("Proxy grpc address: %s:%s", grpc_ip, self.grpc_port)
+        self._host_name = host_name
         self._operator_client = OperatorClient(operator_address)
-        self._tasks
+        self._next_task_id = 0
+        self._tasks = {}
     
     async def DoAutoML(self, request, context):
+        logger.info(f"Do auto ml request: {request.data_source} {request.data_partition} {request.model_season_lengths} {request.models}")
+        task_id = _next_task_id
+        _next_task_id += 1
+        trainer_id = self._operator_client.start_trainer("2345", f"{self._host_name}:{self.grpc_port}", task_id, "")
+        self._tasks[task_id] = Proxy.Context(request.data_source, request.data_partition, request.model_season_lengths, request.models, trainer_id)
         return automl_service_pb2.DoAutoMLReply(
             success=True,
-            task_id=123,
+            task_id=task_id,
             message="test",
         )
     
     async def GetResult(self, request, context):
+        if request.task_id not in self._tasks:
+            raise ValueError(f"unknown task id {request.task_id}")     
         return automl_service_pb2.GetResultReply(
             success=True,
-            result="test",
+            result=self._tasks[request.task_id].result,
         )
 
-    async def TrainerRegister(self, request, context):
-        return automl_service_pb2.TrainerRegisterReply(
+    async def Register(self, request, context):
+        if request.task_id not in self._tasks:
+            return automl_service_pb2.RegisterReply(
+                success=False,
+                message=f"Task id {request.task_id} not found.",
+            )
+        context = self._tasks[request.task_id]
+        return automl_service_pb2.RegisterReply(
             success=True,
-            data_source="",
-            data_partition="",
-            model_season_lengths=[3, 4],
-            models=["ZZZ"],
-            message="test",
+            data_source=context.data_source,
+            data_partition=context.data_partition,
+            model_season_lengths=context.model_season_lengths,
+            models=context.models,
+        )
+
+    async def ReportResult(self, request, context):
+        if request.task_id not in self._tasks:
+            return automl_service_pb2.ReportResultReply(
+                success=False,
+                message=f"Task id {request.task_id} not found.",
+            )
+        self._tasks[request.task_id].result = request.result
+        return automl_service_pb2.ReportResultReply(
+            success=True,
         )
 
     async def run(self):
@@ -104,12 +113,15 @@ if __name__ == "__main__":
         "--port", required=True, type=int, help="The grpc port."
     )
     parser.add_argument(
+        "--host-name", required=True, type=str, help="The current host name."
+    )
+    parser.add_argument(
         "--operator-address", required=True, type=str, help="The automl operator address."
     )
 
     args = parser.parse_args()
 
-    proxy = Proxy(args.port, args.operator_address)
+    proxy = Proxy(args.port, args.host_name, args.operator_address)
 
     loop = get_or_create_event_loop()
 

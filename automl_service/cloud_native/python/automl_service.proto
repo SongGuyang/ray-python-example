@@ -28,11 +28,12 @@ service AutoMLService {
   rpc GetResult (GetResultRequest) returns (GetResultReply) {}
 }
 
-message TrainerRegisterRequest {
-  int32 index = 1;
+message RegisterRequest {
+  string id = 1;
+  int32 task_id = 2;
 }
 
-message TrainerRegisterReply {
+message RegisterReply {
   bool success = 1;
   optional string data_source = 2; 
   optional string data_partition = 3;
@@ -40,28 +41,51 @@ message TrainerRegisterReply {
   optional string models = 5;
 }
 
+message ReportResultRequest {
+  string id = 1;
+  int32 task_id = 2;
+  string result = 3;
+}
+
+message ReportResultReply {
+  bool success = 1;
+  optional string message = 2;
+}
+
 // Service from trainer to proxy
 service TrainerRegisterService {
-  rpc TrainerRegister (TrainerRegisterRequest) returns (TrainerRegisterReply) {}
+  rpc Register (RegisterRequest) returns (RegisterReply) {}
+  rpc ReportResult (ReportResultRequest) returns (ReportResultReply) {}
 }
 
-message SingleTrainRequest {
-    bytes model = 1;
-    bytes df = 2;
-    bytes train_indices = 3;
-    bytes test_indices = 4;
-    string label_column = 5;
-    bytes metrics = 6;
-    string freq = 7;
+message WorkerRegisterRequest {
+  string worker_id = 1;
 }
 
-message SingleTrainReply {
+message WorkerRegisterReply {
   bool success = 1;
+  optional bytes model = 2;
+  optional bytes df = 3;
+  optional bytes train_indices = 4;
+  optional bytes test_indices = 5;
+  optional string label_column = 6;
+  optional bytes metrics = 7;
+  optional string freq = 9;
+}
+
+message WorkerReportResultRequest {
+  string worker_id = 1;
   map<string, double> result = 2;
 }
 
-// Service from trainer to worker
-service WorkerService {
-  rpc SingleTrain (SingleTrainRequest) returns (SingleTrainReply) {}
+message WorkerReportResultReply {
+  bool success = 1;
+  optional string message = 2;
+}
+
+// Service from worker to trainer
+service WorkerRegisterService {
+  rpc WorkerRegister (WorkerRegisterRequest) returns (WorkerRegisterReply) {}
+  rpc WorkerReportResult (WorkerReportResultRequest) returns (WorkerReportResultReply) {}
 }
 

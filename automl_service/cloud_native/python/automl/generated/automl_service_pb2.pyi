@@ -41,40 +41,7 @@ class GetResultRequest(_message.Message):
     task_id: int
     def __init__(self, task_id: _Optional[int] = ...) -> None: ...
 
-class SingleTrainReply(_message.Message):
-    __slots__ = ["result", "success"]
-    class ResultEntry(_message.Message):
-        __slots__ = ["key", "value"]
-        KEY_FIELD_NUMBER: _ClassVar[int]
-        VALUE_FIELD_NUMBER: _ClassVar[int]
-        key: str
-        value: float
-        def __init__(self, key: _Optional[str] = ..., value: _Optional[float] = ...) -> None: ...
-    RESULT_FIELD_NUMBER: _ClassVar[int]
-    SUCCESS_FIELD_NUMBER: _ClassVar[int]
-    result: _containers.ScalarMap[str, float]
-    success: bool
-    def __init__(self, success: bool = ..., result: _Optional[_Mapping[str, float]] = ...) -> None: ...
-
-class SingleTrainRequest(_message.Message):
-    __slots__ = ["df", "freq", "label_column", "metrics", "model", "test_indices", "train_indices"]
-    DF_FIELD_NUMBER: _ClassVar[int]
-    FREQ_FIELD_NUMBER: _ClassVar[int]
-    LABEL_COLUMN_FIELD_NUMBER: _ClassVar[int]
-    METRICS_FIELD_NUMBER: _ClassVar[int]
-    MODEL_FIELD_NUMBER: _ClassVar[int]
-    TEST_INDICES_FIELD_NUMBER: _ClassVar[int]
-    TRAIN_INDICES_FIELD_NUMBER: _ClassVar[int]
-    df: bytes
-    freq: str
-    label_column: str
-    metrics: bytes
-    model: bytes
-    test_indices: bytes
-    train_indices: bytes
-    def __init__(self, model: _Optional[bytes] = ..., df: _Optional[bytes] = ..., train_indices: _Optional[bytes] = ..., test_indices: _Optional[bytes] = ..., label_column: _Optional[str] = ..., metrics: _Optional[bytes] = ..., freq: _Optional[str] = ...) -> None: ...
-
-class TrainerRegisterReply(_message.Message):
+class RegisterReply(_message.Message):
     __slots__ = ["data_partition", "data_source", "model_season_lengths", "models", "success"]
     DATA_PARTITION_FIELD_NUMBER: _ClassVar[int]
     DATA_SOURCE_FIELD_NUMBER: _ClassVar[int]
@@ -88,8 +55,77 @@ class TrainerRegisterReply(_message.Message):
     success: bool
     def __init__(self, success: bool = ..., data_source: _Optional[str] = ..., data_partition: _Optional[str] = ..., model_season_lengths: _Optional[int] = ..., models: _Optional[str] = ...) -> None: ...
 
-class TrainerRegisterRequest(_message.Message):
-    __slots__ = ["index"]
-    INDEX_FIELD_NUMBER: _ClassVar[int]
-    index: int
-    def __init__(self, index: _Optional[int] = ...) -> None: ...
+class RegisterRequest(_message.Message):
+    __slots__ = ["id", "task_id"]
+    ID_FIELD_NUMBER: _ClassVar[int]
+    TASK_ID_FIELD_NUMBER: _ClassVar[int]
+    id: str
+    task_id: int
+    def __init__(self, id: _Optional[str] = ..., task_id: _Optional[int] = ...) -> None: ...
+
+class ReportResultReply(_message.Message):
+    __slots__ = ["message", "success"]
+    MESSAGE_FIELD_NUMBER: _ClassVar[int]
+    SUCCESS_FIELD_NUMBER: _ClassVar[int]
+    message: str
+    success: bool
+    def __init__(self, success: bool = ..., message: _Optional[str] = ...) -> None: ...
+
+class ReportResultRequest(_message.Message):
+    __slots__ = ["id", "result", "task_id"]
+    ID_FIELD_NUMBER: _ClassVar[int]
+    RESULT_FIELD_NUMBER: _ClassVar[int]
+    TASK_ID_FIELD_NUMBER: _ClassVar[int]
+    id: str
+    result: str
+    task_id: int
+    def __init__(self, id: _Optional[str] = ..., task_id: _Optional[int] = ..., result: _Optional[str] = ...) -> None: ...
+
+class WorkerRegisterReply(_message.Message):
+    __slots__ = ["df", "freq", "label_column", "metrics", "model", "success", "test_indices", "train_indices"]
+    DF_FIELD_NUMBER: _ClassVar[int]
+    FREQ_FIELD_NUMBER: _ClassVar[int]
+    LABEL_COLUMN_FIELD_NUMBER: _ClassVar[int]
+    METRICS_FIELD_NUMBER: _ClassVar[int]
+    MODEL_FIELD_NUMBER: _ClassVar[int]
+    SUCCESS_FIELD_NUMBER: _ClassVar[int]
+    TEST_INDICES_FIELD_NUMBER: _ClassVar[int]
+    TRAIN_INDICES_FIELD_NUMBER: _ClassVar[int]
+    df: bytes
+    freq: str
+    label_column: str
+    metrics: bytes
+    model: bytes
+    success: bool
+    test_indices: bytes
+    train_indices: bytes
+    def __init__(self, success: bool = ..., model: _Optional[bytes] = ..., df: _Optional[bytes] = ..., train_indices: _Optional[bytes] = ..., test_indices: _Optional[bytes] = ..., label_column: _Optional[str] = ..., metrics: _Optional[bytes] = ..., freq: _Optional[str] = ...) -> None: ...
+
+class WorkerRegisterRequest(_message.Message):
+    __slots__ = ["worker_id"]
+    WORKER_ID_FIELD_NUMBER: _ClassVar[int]
+    worker_id: str
+    def __init__(self, worker_id: _Optional[str] = ...) -> None: ...
+
+class WorkerReportResultReply(_message.Message):
+    __slots__ = ["message", "success"]
+    MESSAGE_FIELD_NUMBER: _ClassVar[int]
+    SUCCESS_FIELD_NUMBER: _ClassVar[int]
+    message: str
+    success: bool
+    def __init__(self, success: bool = ..., message: _Optional[str] = ...) -> None: ...
+
+class WorkerReportResultRequest(_message.Message):
+    __slots__ = ["result", "worker_id"]
+    class ResultEntry(_message.Message):
+        __slots__ = ["key", "value"]
+        KEY_FIELD_NUMBER: _ClassVar[int]
+        VALUE_FIELD_NUMBER: _ClassVar[int]
+        key: str
+        value: float
+        def __init__(self, key: _Optional[str] = ..., value: _Optional[float] = ...) -> None: ...
+    RESULT_FIELD_NUMBER: _ClassVar[int]
+    WORKER_ID_FIELD_NUMBER: _ClassVar[int]
+    result: _containers.ScalarMap[str, float]
+    worker_id: str
+    def __init__(self, worker_id: _Optional[str] = ..., result: _Optional[_Mapping[str, float]] = ...) -> None: ...
