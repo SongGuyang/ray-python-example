@@ -12,5 +12,5 @@ class OperatorClient:
     def start_worker_group(self, trainer_address, number, specs):
         return "group_id", ["test worker id 1", "test worker id 2"]
     
-    def stop_worker_group(self, "group_id"):
+    def stop_worker_group(self, group_id):
         return True
