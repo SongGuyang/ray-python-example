@@ -6,11 +6,11 @@ class OperatorClient:
     def start_trainer(self, grpc_port, proxy_address, task_id, spec):
         return f"test id"
     
-    def stop_trainer(self, context):
+    def stop_trainer(self, trainer_id):
         return True
 
     def start_worker_group(self, trainer_address, number, specs):
-        return "test worker group id"
+        return "group_id", ["test worker id 1", "test worker id 2"]
     
-    def stop_worker_group(self, context):
+    def stop_worker_group(self, "group_id"):
         return True
