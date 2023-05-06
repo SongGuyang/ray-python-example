@@ -2,7 +2,7 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-import automl_service_pb2 as automl__service__pb2
+import automl.generated.automl_service_pb2 as automl__service__pb2
 
 
 class AutoMLServiceStub(object):

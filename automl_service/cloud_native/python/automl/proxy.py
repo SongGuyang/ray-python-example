@@ -48,8 +48,8 @@ class Proxy(automl_service_pb2_grpc.AutoMLServiceServicer,
     
     async def DoAutoML(self, request, context):
         logger.info(f"Do auto ml request: {request.data_source} {request.data_partition} {request.model_season_lengths} {request.models}")
-        task_id = _next_task_id
-        _next_task_id += 1
+        task_id = self._next_task_id
+        self._next_task_id += 1
         trainer_id = self._operator_client.start_trainer("2345", f"{self._host_name}:{self.grpc_port}", task_id, "")
         self._tasks[task_id] = Proxy.Context(request.data_source, request.data_partition, request.model_season_lengths, request.models, trainer_id)
         return automl_service_pb2.DoAutoMLReply(
@@ -82,6 +82,7 @@ class Proxy(automl_service_pb2_grpc.AutoMLServiceServicer,
         )
 
     async def ReportResult(self, request, context):
+        logger.info(f"Receive report result with task id {request.task_id}.")
         if request.task_id not in self._tasks:
             return automl_service_pb2.ReportResultReply(
                 success=False,

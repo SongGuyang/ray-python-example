@@ -37,8 +37,8 @@ message RegisterReply {
   bool success = 1;
   optional string data_source = 2; 
   optional string data_partition = 3;
-  optional int32 model_season_lengths = 4;
-  optional string models = 5;
+  repeated int32 model_season_lengths = 4;
+  repeated string models = 5;
 }
 
 message ReportResultRequest {
@@ -64,13 +64,14 @@ message WorkerRegisterRequest {
 
 message WorkerRegisterReply {
   bool success = 1;
-  optional bytes model = 2;
-  optional bytes df = 3;
-  optional bytes train_indices = 4;
-  optional bytes test_indices = 5;
-  optional string label_column = 6;
-  optional bytes metrics = 7;
-  optional string freq = 9;
+  optional bytes worker_task = 2;
+  // optional bytes model = 2;
+  // optional bytes df = 3;
+  // optional bytes train_indices = 4;
+  // optional bytes test_indices = 5;
+  // optional string label_column = 6;
+  // optional bytes metrics = 7;
+  // optional string freq = 9;
 }
 
 message WorkerReportResultRequest {

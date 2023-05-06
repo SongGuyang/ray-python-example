@@ -50,10 +50,10 @@ class RegisterReply(_message.Message):
     SUCCESS_FIELD_NUMBER: _ClassVar[int]
     data_partition: str
     data_source: str
-    model_season_lengths: int
-    models: str
+    model_season_lengths: _containers.RepeatedScalarFieldContainer[int]
+    models: _containers.RepeatedScalarFieldContainer[str]
     success: bool
-    def __init__(self, success: bool = ..., data_source: _Optional[str] = ..., data_partition: _Optional[str] = ..., model_season_lengths: _Optional[int] = ..., models: _Optional[str] = ...) -> None: ...
+    def __init__(self, success: bool = ..., data_source: _Optional[str] = ..., data_partition: _Optional[str] = ..., model_season_lengths: _Optional[_Iterable[int]] = ..., models: _Optional[_Iterable[str]] = ...) -> None: ...
 
 class RegisterRequest(_message.Message):
     __slots__ = ["id", "task_id"]
@@ -82,24 +82,12 @@ class ReportResultRequest(_message.Message):
     def __init__(self, id: _Optional[str] = ..., task_id: _Optional[int] = ..., result: _Optional[str] = ...) -> None: ...
 
 class WorkerRegisterReply(_message.Message):
-    __slots__ = ["df", "freq", "label_column", "metrics", "model", "success", "test_indices", "train_indices"]
-    DF_FIELD_NUMBER: _ClassVar[int]
-    FREQ_FIELD_NUMBER: _ClassVar[int]
-    LABEL_COLUMN_FIELD_NUMBER: _ClassVar[int]
-    METRICS_FIELD_NUMBER: _ClassVar[int]
-    MODEL_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["success", "worker_task"]
     SUCCESS_FIELD_NUMBER: _ClassVar[int]
-    TEST_INDICES_FIELD_NUMBER: _ClassVar[int]
-    TRAIN_INDICES_FIELD_NUMBER: _ClassVar[int]
-    df: bytes
-    freq: str
-    label_column: str
-    metrics: bytes
-    model: bytes
+    WORKER_TASK_FIELD_NUMBER: _ClassVar[int]
     success: bool
-    test_indices: bytes
-    train_indices: bytes
-    def __init__(self, success: bool = ..., model: _Optional[bytes] = ..., df: _Optional[bytes] = ..., train_indices: _Optional[bytes] = ..., test_indices: _Optional[bytes] = ..., label_column: _Optional[str] = ..., metrics: _Optional[bytes] = ..., freq: _Optional[str] = ...) -> None: ...
+    worker_task: bytes
+    def __init__(self, success: bool = ..., worker_task: _Optional[bytes] = ...) -> None: ...
 
 class WorkerRegisterRequest(_message.Message):
     __slots__ = ["worker_id"]
