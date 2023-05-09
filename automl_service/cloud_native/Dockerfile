@@ -5,3 +5,4 @@ RUN wget https://www.python.org/ftp/python/3.9.16/Python-3.9.16.tgz && tar xvf P
 RUN ln -s /usr/local/bin/python3.9 /usr/bin/python -f
 COPY python/ /python
 RUN python -m pip install -r /python/requirements.txt
+WORKDIR /python
