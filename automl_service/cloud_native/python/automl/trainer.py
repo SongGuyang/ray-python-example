@@ -226,7 +226,8 @@ class Trainer(automl_service_pb2_grpc.WorkerRegisterService):
             "y",
             {"mse": mean_squared_error, "mae": mean_absolute_error},
             self._eval_metric,
-            cv=TimeSeriesSplit(test_size=1),
+            cv=TimeSeriesSplit(n_splits=2),
+            # cv=TimeSeriesSplit(test_size=1),
         )
     
     async def train_finish(self):
