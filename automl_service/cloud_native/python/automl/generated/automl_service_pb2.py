@@ -13,7 +13,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x14\x61utoml_service.proto\"l\n\x0f\x44oAutoMLRequest\x12\x13\n\x0b\x64\x61ta_source\x18\x01 \x01(\t\x12\x16\n\x0e\x64\x61ta_partition\x18\x02 \x01(\t\x12\x1c\n\x14model_season_lengths\x18\x03 \x03(\x05\x12\x0e\n\x06models\x18\x04 \x03(\t\"d\n\rDoAutoMLReply\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x14\n\x07task_id\x18\x02 \x01(\x05H\x00\x88\x01\x01\x12\x14\n\x07message\x18\x03 \x01(\tH\x01\x88\x01\x01\x42\n\n\x08_task_idB\n\n\x08_message\"#\n\x10GetResultRequest\x12\x0f\n\x07task_id\x18\x01 \x01(\x05\"A\n\x0eGetResultReply\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x13\n\x06result\x18\x02 \x01(\tH\x00\x88\x01\x01\x42\t\n\x07_result\".\n\x0fRegisterRequest\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0f\n\x07task_id\x18\x02 \x01(\x05\"\xa8\x01\n\rRegisterReply\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x18\n\x0b\x64\x61ta_source\x18\x02 \x01(\tH\x00\x88\x01\x01\x12\x1b\n\x0e\x64\x61ta_partition\x18\x03 \x01(\tH\x01\x88\x01\x01\x12\x1c\n\x14model_season_lengths\x18\x04 \x03(\x05\x12\x0e\n\x06models\x18\x05 \x03(\tB\x0e\n\x0c_data_sourceB\x11\n\x0f_data_partition\"B\n\x13ReportResultRequest\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0f\n\x07task_id\x18\x02 \x01(\x05\x12\x0e\n\x06result\x18\x03 \x01(\t\"F\n\x11ReportResultReply\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x14\n\x07message\x18\x02 \x01(\tH\x00\x88\x01\x01\x42\n\n\x08_message\"*\n\x15WorkerRegisterRequest\x12\x11\n\tworker_id\x18\x01 \x01(\t\"P\n\x13WorkerRegisterReply\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x18\n\x0bworker_task\x18\x02 \x01(\x0cH\x00\x88\x01\x01\x42\x0e\n\x0c_worker_task\"\x95\x01\n\x19WorkerReportResultRequest\x12\x11\n\tworker_id\x18\x01 \x01(\t\x12\x36\n\x06result\x18\x02 \x03(\x0b\x32&.WorkerReportResultRequest.ResultEntry\x1a-\n\x0bResultEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x01:\x02\x38\x01\"L\n\x17WorkerReportResultReply\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x14\n\x07message\x18\x02 \x01(\tH\x00\x88\x01\x01\x42\n\n\x08_message2r\n\rAutoMLService\x12.\n\x08\x44oAutoML\x12\x10.DoAutoMLRequest\x1a\x0e.DoAutoMLReply\"\x00\x12\x31\n\tGetResult\x12\x11.GetResultRequest\x1a\x0f.GetResultReply\"\x00\x32\x84\x01\n\x16TrainerRegisterService\x12.\n\x08Register\x12\x10.RegisterRequest\x1a\x0e.RegisterReply\"\x00\x12:\n\x0cReportResult\x12\x14.ReportResultRequest\x1a\x12.ReportResultReply\"\x00\x32\xa7\x01\n\x15WorkerRegisterService\x12@\n\x0eWorkerRegister\x12\x16.WorkerRegisterRequest\x1a\x14.WorkerRegisterReply\"\x00\x12L\n\x12WorkerReportResult\x12\x1a.WorkerReportResultRequest\x1a\x18.WorkerReportResultReply\"\x00\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x14\x61utoml_service.proto\"l\n\x0f\x44oAutoMLRequest\x12\x13\n\x0b\x64\x61ta_source\x18\x01 \x01(\t\x12\x16\n\x0e\x64\x61ta_partition\x18\x02 \x01(\t\x12\x1c\n\x14model_season_lengths\x18\x03 \x03(\x05\x12\x0e\n\x06models\x18\x04 \x03(\t\"d\n\rDoAutoMLReply\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x14\n\x07task_id\x18\x02 \x01(\x05H\x00\x88\x01\x01\x12\x14\n\x07message\x18\x03 \x01(\tH\x01\x88\x01\x01\x42\n\n\x08_task_idB\n\n\x08_message\"#\n\x10GetResultRequest\x12\x0f\n\x07task_id\x18\x01 \x01(\x05\"A\n\x0eGetResultReply\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x13\n\x06result\x18\x02 \x01(\tH\x00\x88\x01\x01\x42\t\n\x07_result\".\n\x0fRegisterRequest\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0f\n\x07task_id\x18\x02 \x01(\x05\"\xca\x01\n\rRegisterReply\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x18\n\x0b\x64\x61ta_source\x18\x02 \x01(\tH\x00\x88\x01\x01\x12\x1b\n\x0e\x64\x61ta_partition\x18\x03 \x01(\tH\x01\x88\x01\x01\x12\x1c\n\x14model_season_lengths\x18\x04 \x03(\x05\x12\x0e\n\x06models\x18\x05 \x03(\t\x12\x14\n\x07message\x18\x06 \x01(\tH\x02\x88\x01\x01\x42\x0e\n\x0c_data_sourceB\x11\n\x0f_data_partitionB\n\n\x08_message\"B\n\x13ReportResultRequest\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0f\n\x07task_id\x18\x02 \x01(\x05\x12\x0e\n\x06result\x18\x03 \x01(\t\"F\n\x11ReportResultReply\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x14\n\x07message\x18\x02 \x01(\tH\x00\x88\x01\x01\x42\n\n\x08_message\"*\n\x15WorkerRegisterRequest\x12\x11\n\tworker_id\x18\x01 \x01(\t\"P\n\x13WorkerRegisterReply\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x18\n\x0bworker_task\x18\x02 \x01(\x0cH\x00\x88\x01\x01\x42\x0e\n\x0c_worker_task\"\x95\x01\n\x19WorkerReportResultRequest\x12\x11\n\tworker_id\x18\x01 \x01(\t\x12\x36\n\x06result\x18\x02 \x03(\x0b\x32&.WorkerReportResultRequest.ResultEntry\x1a-\n\x0bResultEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x01:\x02\x38\x01\"L\n\x17WorkerReportResultReply\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x14\n\x07message\x18\x02 \x01(\tH\x00\x88\x01\x01\x42\n\n\x08_message2r\n\rAutoMLService\x12.\n\x08\x44oAutoML\x12\x10.DoAutoMLRequest\x1a\x0e.DoAutoMLReply\"\x00\x12\x31\n\tGetResult\x12\x11.GetResultRequest\x1a\x0f.GetResultReply\"\x00\x32\x84\x01\n\x16TrainerRegisterService\x12.\n\x08Register\x12\x10.RegisterRequest\x1a\x0e.RegisterReply\"\x00\x12:\n\x0cReportResult\x12\x14.ReportResultRequest\x1a\x12.ReportResultReply\"\x00\x32\xa7\x01\n\x15WorkerRegisterService\x12@\n\x0eWorkerRegister\x12\x16.WorkerRegisterRequest\x1a\x14.WorkerRegisterReply\"\x00\x12L\n\x12WorkerReportResult\x12\x1a.WorkerReportResultRequest\x1a\x18.WorkerReportResultReply\"\x00\x62\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'automl_service_pb2', globals())
@@ -33,25 +33,25 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _REGISTERREQUEST._serialized_start=340
   _REGISTERREQUEST._serialized_end=386
   _REGISTERREPLY._serialized_start=389
-  _REGISTERREPLY._serialized_end=557
-  _REPORTRESULTREQUEST._serialized_start=559
-  _REPORTRESULTREQUEST._serialized_end=625
-  _REPORTRESULTREPLY._serialized_start=627
-  _REPORTRESULTREPLY._serialized_end=697
-  _WORKERREGISTERREQUEST._serialized_start=699
-  _WORKERREGISTERREQUEST._serialized_end=741
-  _WORKERREGISTERREPLY._serialized_start=743
-  _WORKERREGISTERREPLY._serialized_end=823
-  _WORKERREPORTRESULTREQUEST._serialized_start=826
-  _WORKERREPORTRESULTREQUEST._serialized_end=975
-  _WORKERREPORTRESULTREQUEST_RESULTENTRY._serialized_start=930
-  _WORKERREPORTRESULTREQUEST_RESULTENTRY._serialized_end=975
-  _WORKERREPORTRESULTREPLY._serialized_start=977
-  _WORKERREPORTRESULTREPLY._serialized_end=1053
-  _AUTOMLSERVICE._serialized_start=1055
-  _AUTOMLSERVICE._serialized_end=1169
-  _TRAINERREGISTERSERVICE._serialized_start=1172
-  _TRAINERREGISTERSERVICE._serialized_end=1304
-  _WORKERREGISTERSERVICE._serialized_start=1307
-  _WORKERREGISTERSERVICE._serialized_end=1474
+  _REGISTERREPLY._serialized_end=591
+  _REPORTRESULTREQUEST._serialized_start=593
+  _REPORTRESULTREQUEST._serialized_end=659
+  _REPORTRESULTREPLY._serialized_start=661
+  _REPORTRESULTREPLY._serialized_end=731
+  _WORKERREGISTERREQUEST._serialized_start=733
+  _WORKERREGISTERREQUEST._serialized_end=775
+  _WORKERREGISTERREPLY._serialized_start=777
+  _WORKERREGISTERREPLY._serialized_end=857
+  _WORKERREPORTRESULTREQUEST._serialized_start=860
+  _WORKERREPORTRESULTREQUEST._serialized_end=1009
+  _WORKERREPORTRESULTREQUEST_RESULTENTRY._serialized_start=964
+  _WORKERREPORTRESULTREQUEST_RESULTENTRY._serialized_end=1009
+  _WORKERREPORTRESULTREPLY._serialized_start=1011
+  _WORKERREPORTRESULTREPLY._serialized_end=1087
+  _AUTOMLSERVICE._serialized_start=1089
+  _AUTOMLSERVICE._serialized_end=1203
+  _TRAINERREGISTERSERVICE._serialized_start=1206
+  _TRAINERREGISTERSERVICE._serialized_end=1338
+  _WORKERREGISTERSERVICE._serialized_start=1341
+  _WORKERREGISTERSERVICE._serialized_end=1508
 # @@protoc_insertion_point(module_scope)

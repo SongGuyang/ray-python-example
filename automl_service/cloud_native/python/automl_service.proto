@@ -39,6 +39,7 @@ message RegisterReply {
   optional string data_partition = 3;
   repeated int32 model_season_lengths = 4;
   repeated string models = 5;
+  optional string message = 6;
 }
 
 message ReportResultRequest {

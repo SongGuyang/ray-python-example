@@ -42,18 +42,20 @@ class GetResultRequest(_message.Message):
     def __init__(self, task_id: _Optional[int] = ...) -> None: ...
 
 class RegisterReply(_message.Message):
-    __slots__ = ["data_partition", "data_source", "model_season_lengths", "models", "success"]
+    __slots__ = ["data_partition", "data_source", "message", "model_season_lengths", "models", "success"]
     DATA_PARTITION_FIELD_NUMBER: _ClassVar[int]
     DATA_SOURCE_FIELD_NUMBER: _ClassVar[int]
+    MESSAGE_FIELD_NUMBER: _ClassVar[int]
     MODELS_FIELD_NUMBER: _ClassVar[int]
     MODEL_SEASON_LENGTHS_FIELD_NUMBER: _ClassVar[int]
     SUCCESS_FIELD_NUMBER: _ClassVar[int]
     data_partition: str
     data_source: str
+    message: str
     model_season_lengths: _containers.RepeatedScalarFieldContainer[int]
     models: _containers.RepeatedScalarFieldContainer[str]
     success: bool
-    def __init__(self, success: bool = ..., data_source: _Optional[str] = ..., data_partition: _Optional[str] = ..., model_season_lengths: _Optional[_Iterable[int]] = ..., models: _Optional[_Iterable[str]] = ...) -> None: ...
+    def __init__(self, success: bool = ..., data_source: _Optional[str] = ..., data_partition: _Optional[str] = ..., model_season_lengths: _Optional[_Iterable[int]] = ..., models: _Optional[_Iterable[str]] = ..., message: _Optional[str] = ...) -> None: ...
 
 class RegisterRequest(_message.Message):
     __slots__ = ["id", "task_id"]

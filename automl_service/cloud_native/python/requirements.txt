@@ -4,3 +4,4 @@ scikit-learn
 pickleshare
 numpy
 protobuf
+requests
