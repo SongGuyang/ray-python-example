@@ -26,9 +26,8 @@ import (
 
 const (
 	ProxyContainerName              = "proxy"
-	ProxyContainerPortName          = "proxy"
 	ProxyContainerPortNumber        = "proxy-port"
-	ProxyGrpcPortNumber             = "grpc-port"
+	ProxyGrpcPortNumber             = "port"
 	ProxyAddress                    = "proxy-address"
 	ProxyContainerPortNumberDefault = int32(1234)
 )

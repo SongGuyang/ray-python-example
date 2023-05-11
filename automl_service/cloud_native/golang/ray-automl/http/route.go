@@ -43,6 +43,13 @@ func (r *RestServer) setupRoute(path string) http.Handler {
 	{
 		trainer := v1.Group(Trainer)
 		trainer.POST(Create, r.trainerCreateV1)
+		trainer.POST(Delete, r.trainerDeleteV1)
+	}
+
+	{
+		trainer := v1.Group(Worker)
+		trainer.POST(Create, r.workerCreateV1)
+		trainer.POST(Delete, r.workerDeleteV1)
 	}
 
 	health := api.Group(Health)

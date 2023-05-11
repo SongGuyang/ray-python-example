@@ -1,4 +1,4 @@
-package utils
+package common
 
 import (
 	"fmt"
@@ -35,20 +35,29 @@ func BuildProxyContainer(instance *automlv1.Proxy) {
 	if index < 0 {
 		instance.Spec.DeploySpec.Template.Spec.Containers = append(instance.Spec.DeploySpec.Template.Spec.Containers, corev1.Container{Name: automlv1.ProxyContainerName})
 	} else {
-		paramMap := convertParamMap(instance.Spec.StartParams)
-		container.Command = []string{"python", "-m"}
-		container.Args = []string{"automl.proxy " + paramMap}
-		container.Env = append(container.Env, corev1.EnvVar{
-			Name: "MY_POD_NAME",
-			ValueFrom: &corev1.EnvVarSource{
-				FieldRef: &corev1.ObjectFieldSelector{
-					FieldPath: "metadata.name",
+		paramMap := ConvertParamMap(instance.Spec.StartParams)
+		container.Command = []string{"bash", "-c"}
+		container.Args = []string{"python -m automl.proxy " + paramMap}
+		container.Env = append(container.Env,
+			corev1.EnvVar{
+				Name: "MY_POD_NAME",
+				ValueFrom: &corev1.EnvVarSource{
+					FieldRef: &corev1.ObjectFieldSelector{
+						FieldPath: "metadata.name",
+					},
+				},
+			}, corev1.EnvVar{
+				Name: "MY_POD_IP",
+				ValueFrom: &corev1.EnvVarSource{
+					FieldRef: &corev1.ObjectFieldSelector{
+						FieldPath: "status.podIP",
+					},
 				},
 			},
-		})
-		cpu := getOrDefault(instance.Spec.StartParams, Cpu, "1")
-		memory := getOrDefault(instance.Spec.StartParams, Memory, "1Gi")
-		disk := getOrDefault(instance.Spec.StartParams, Disk, "1Gi")
+		)
+		cpu := GetOrDefault(instance.Spec.StartParams, Cpu, "1")
+		memory := GetOrDefault(instance.Spec.StartParams, Memory, "1Gi")
+		disk := GetOrDefault(instance.Spec.StartParams, Disk, "1Gi")
 		container.Resources.Limits = BuildResourceList(cpu, memory, disk)
 		container.Resources.Requests = BuildResourceList(cpu, memory, disk)
 		instance.Spec.DeploySpec.Template.Spec.Containers[index] = *container

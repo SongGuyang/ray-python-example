@@ -26,13 +26,23 @@ import (
 
 const (
 	TrainerWorkerContainerName        = "worker"
+	TrainerWorkerGroup                = "group"
 	TrainerContainerName              = "trainer"
 	TrainerContainerPortNumber        = "trainer-port"
 	TrainerGrpcPortNumber             = "grpc-port"
 	TrainerId                         = "trainer-id"
 	TaskId                            = "task-id"
+	Hostname                          = "host-name"
 	TrainerAddress                    = "trainer-address"
 	TrainerContainerPortNumberDefault = int32(2345)
+
+	TrainerCpu    = "TRAINER_CPU"
+	TrainerMemory = "TRAINER_MEMORY"
+	TrainerDisk   = "TRAINER_DISK"
+
+	WorkerCpu    = "WORKER_CPU"
+	WorkerMemory = "WORKER_MEMORY"
+	WorkerDisk   = "WORKER_DISK"
 )
 
 // TrainerSpec defines the desired state of Trainer

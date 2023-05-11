@@ -7,6 +7,7 @@ const (
 	Version1 = "/v1"
 
 	Trainer = "/trainer"
+	Worker  = "/worker"
 
 	Create = "/create"
 	Get    = "/get"
