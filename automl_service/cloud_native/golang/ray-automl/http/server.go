@@ -3,9 +3,9 @@ package http
 import (
 	"context"
 	"errors"
-	automlv1 "github.com/ray-automl/pkg/client/clientset/versioned/typed/automl/v1"
 	"k8s.io/client-go/rest"
 	"net/http"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 	"time"
 
@@ -15,8 +15,8 @@ import (
 var serverLog = logf.Log.WithName("server")
 
 type RestServer struct {
-	server            *http.Server
-	automlV1Interface automlv1.AutomlV1Interface
+	server *http.Server
+	client.Client
 }
 
 // Start will start the rest server
@@ -36,16 +36,11 @@ func (r *RestServer) Stop(ctx context.Context) error {
 }
 
 // New will create a rest api server: debug link: http://localhost:7070/swagger/index.html
-func New(config *rest.Config) (*RestServer, error) {
-
-	automlV1Client, err := automlv1.NewForConfig(config)
-	if err != nil {
-		serverLog.Error(err, "failed to create automlV1Client")
-	}
+func New(config *rest.Config, client client.Client) (*RestServer, error) {
 
 	restServer := &RestServer{
-		server:            nil,
-		automlV1Interface: automlV1Client,
+		server: nil,
+		Client: client,
 	}
 	server := &http.Server{
 		Addr:         ":" + DefaultRayOperatorServerPort,

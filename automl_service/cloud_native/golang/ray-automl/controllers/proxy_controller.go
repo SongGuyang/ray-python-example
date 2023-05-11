@@ -20,7 +20,7 @@ import (
 	"context"
 	"github.com/go-logr/logr"
 	automlv1 "github.com/ray-automl/apis/automl/v1"
-	"github.com/ray-automl/controllers/utils"
+	"github.com/ray-automl/common"
 	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
@@ -86,8 +86,8 @@ func (r *ProxyReconciler) proxyReconcile(req ctrl.Request, instance *automlv1.Pr
 }
 
 func (r *ProxyReconciler) reconcileServices(instance *automlv1.Proxy) error {
-	service := utils.NewService(instance, r.Log)
-	utils.SetProxyOwnerReference(service, instance)
+	service := common.NewService(instance, r.Log)
+	common.SetProxyOwnerReference(service, instance)
 	if err := r.Create(context.TODO(), service); err != nil {
 		return err
 	}
@@ -95,8 +95,8 @@ func (r *ProxyReconciler) reconcileServices(instance *automlv1.Proxy) error {
 }
 
 func (r *ProxyReconciler) reconcileProxyDeploy(instance *automlv1.Proxy) error {
-	deployment := utils.NewDeployment(instance, r.Log)
-	utils.SetProxyOwnerReference(deployment, instance)
+	deployment := common.NewDeployment(instance, r.Log)
+	common.SetProxyOwnerReference(deployment, instance)
 	if err := r.Create(context.TODO(), deployment); err != nil {
 		return err
 	}
