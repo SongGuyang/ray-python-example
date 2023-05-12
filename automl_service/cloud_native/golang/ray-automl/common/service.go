@@ -1,4 +1,4 @@
-package utils
+package common
 
 import (
 	"github.com/go-logr/logr"
@@ -37,7 +37,7 @@ func NewServiceInstanceProxy(instance *automlv1.Proxy, log logr.Logger) *corev1.
 			Selector:  instance.Spec.DeploySpec.Selector.MatchLabels,
 			Ports: []corev1.ServicePort{
 				{
-					Name:     automlv1.ProxyContainerPortName,
+					Name:     automlv1.ProxyContainerName,
 					Port:     port,
 					Protocol: corev1.ProtocolTCP,
 					TargetPort: intstr.IntOrString{

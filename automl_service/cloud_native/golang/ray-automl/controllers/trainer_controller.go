@@ -20,17 +20,13 @@ import (
 	"context"
 	"github.com/go-logr/logr"
 	automlv1 "github.com/ray-automl/apis/automl/v1"
-	"github.com/ray-automl/controllers/utils"
+	"github.com/ray-automl/common"
 	"k8s.io/apimachinery/pkg/api/errors"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
-	"k8s.io/apimachinery/pkg/util/wait"
-	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
-	"time"
 )
 
 // TrainerReconciler reconciles a Trainer object
@@ -88,29 +84,12 @@ func (r *TrainerReconciler) trainerReconcile(req ctrl.Request, instance *automlv
 		return ctrl.Result{Requeue: true}, nil
 	}
 
-	isReady := false
-	if isReady, err = r.CheckDeploymentStatus(instance.Namespace, instance.Name); err != nil && !errors.IsNotFound(err) {
-		r.Log.Error(err, "failed to check trainer deploy status for instance", "instance", req.NamespacedName)
-		return ctrl.Result{Requeue: true}, nil
-	}
-
-	r.Log.Info("trainer deploy instance checkDeploymentStatus", "isReady", isReady)
-
-	if isReady || !isReady {
-		if err := r.reconcileTrainerWorkerDeploy(instance); err != nil && !errors.IsAlreadyExists(err) {
-			r.Log.Error(err, "failed to create trainer worker deploy for instance", "instance", req.NamespacedName)
-			return ctrl.Result{Requeue: true}, nil
-		}
-	} else {
-		return ctrl.Result{RequeueAfter: 10 * time.Second}, nil
-	}
-
 	return ctrl.Result{}, nil
 }
 
 func (r *TrainerReconciler) reconcileServices(instance *automlv1.Trainer) error {
-	service := utils.NewService(instance, r.Log)
-	utils.SetTrainerOwnerReference(service, instance)
+	service := common.NewService(instance, r.Log)
+	common.SetTrainerOwnerReference(service, instance)
 	if err := r.Create(context.TODO(), service); err != nil {
 		return err
 	}
@@ -118,51 +97,12 @@ func (r *TrainerReconciler) reconcileServices(instance *automlv1.Trainer) error 
 }
 
 func (r *TrainerReconciler) reconcileTrainerDeploy(instance *automlv1.Trainer) error {
-	deployment := utils.NewDeployment(instance, r.Log)
-	utils.SetTrainerOwnerReference(deployment, instance)
+	deployment := common.NewDeployment(instance, r.Log)
+	common.SetTrainerOwnerReference(deployment, instance)
 	if err := r.Create(context.TODO(), deployment); err != nil {
 		return err
 	}
 	return nil
-}
-
-func (r *TrainerReconciler) reconcileTrainerWorkerDeploy(instance *automlv1.Trainer) error {
-	deployments := utils.NewDeploymentInstanceWorker(instance, r.Log)
-	for _, deployment := range deployments {
-		utils.SetTrainerOwnerReference(deployment, instance)
-		r.Log.Info("reconcileTrainerWorkerDeploy", "deployment", deployment)
-		if err := r.Create(context.TODO(), deployment); err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// CheckDeploymentStatus checks if a deployment is running and ready
-func (r *TrainerReconciler) CheckDeploymentStatus(namespace string, deploymentName string) (bool, error) {
-	// Create Kubernetes clientset
-	clientset, err := kubernetes.NewForConfig(r.Config)
-	if err != nil {
-		return false, err
-	}
-
-	// Wait for the deployment to be ready
-	err = wait.PollImmediate(time.Second, time.Minute*5, func() (bool, error) {
-
-		deployment, err := clientset.AppsV1().Deployments(namespace).Get(context.TODO(), deploymentName, metav1.GetOptions{})
-		if err != nil {
-			return false, err
-		}
-		if deployment.Status.ReadyReplicas == deployment.Status.Replicas {
-			return true, nil
-		}
-		return false, nil
-	})
-
-	if err != nil {
-		return false, err
-	}
-	return false, nil
 }
 
 // SetupWithManager sets up the controller with the Manager.

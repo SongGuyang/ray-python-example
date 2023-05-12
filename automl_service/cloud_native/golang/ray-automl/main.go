@@ -18,7 +18,7 @@ package main
 
 import (
 	"flag"
-	"github.com/ray-automl/controllers/utils"
+	"github.com/ray-automl/common"
 	"github.com/ray-automl/http"
 	"os"
 
@@ -61,7 +61,7 @@ func main() {
 			"Enabling this will ensure there is only one active controller manager.")
 	opts := zap.Options{
 		Development: true,
-		Encoder:     utils.NewZapConsoleEncoder(),
+		Encoder:     common.NewZapConsoleEncoder(),
 	}
 	opts.BindFlags(flag.CommandLine)
 	flag.Parse()
@@ -122,7 +122,9 @@ func main() {
 
 	setupLog.Info("starting http server")
 	errChan := make(chan error, 1)
-	server, err := http.New(mgr.GetConfig())
+	server, err := http.New(
+		mgr.GetConfig(),
+		mgr.GetClient())
 	if err != nil {
 		setupLog.Error(err, "Start server failed with err:%v", err)
 	}

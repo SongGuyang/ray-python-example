@@ -26,6 +26,15 @@ definitions:
         additionalProperties:
           type: string
         type: object
+    type: object
+  http.WorkerStartReq:
+    properties:
+      image:
+        type: string
+      namespace:
+        type: string
+      trainerAddress:
+        type: string
       workers:
         additionalProperties:
           additionalProperties:
@@ -92,4 +101,124 @@ paths:
       summary: trainerCreateV1 from ray-automl-operator
       tags:
       - trainerCreateV1
+  /api/v1/trainer/delete:
+    post:
+      operationId: trainerDeleteV1
+      parameters:
+      - description: request for trainer delete V1
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/http.TrainerStartReq'
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/http.Response'
+            - properties:
+                code:
+                  type: integer
+                data:
+                  type: string
+                success:
+                  type: boolean
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/http.Response'
+            - properties:
+                code:
+                  type: integer
+                data:
+                  type: string
+                success:
+                  type: boolean
+              type: object
+      summary: trainerDeleteV1 from ray-automl-operator
+      tags:
+      - trainerDeleteV1
+  /api/v1/worker/create:
+    post:
+      operationId: workerCreateV1
+      parameters:
+      - description: request for worker create V1
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/http.WorkerStartReq'
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/http.Response'
+            - properties:
+                code:
+                  type: integer
+                data:
+                  type: string
+                success:
+                  type: boolean
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/http.Response'
+            - properties:
+                code:
+                  type: integer
+                data:
+                  type: string
+                success:
+                  type: boolean
+              type: object
+      summary: workerCreateV1 from ray-automl-operator
+      tags:
+      - workerCreateV1
+  /api/v1/worker/delete:
+    post:
+      operationId: workerDeleteV1
+      parameters:
+      - description: request for worker delete V1
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/http.WorkerStartReq'
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/http.Response'
+            - properties:
+                code:
+                  type: integer
+                data:
+                  type: string
+                success:
+                  type: boolean
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/http.Response'
+            - properties:
+                code:
+                  type: integer
+                data:
+                  type: string
+                success:
+                  type: boolean
+              type: object
+      summary: workerDeleteV1 from ray-automl-operator
+      tags:
+      - workerDeleteV1
 swagger: "2.0"

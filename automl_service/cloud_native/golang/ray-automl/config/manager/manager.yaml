@@ -76,6 +76,30 @@ spec:
         env:
         - name: TIME_ZONE
           value: "/usr/share/zoneinfo/Asia/Shanghai"
+        - name: PROXY_NAME
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.labels['app.kubernetes.io/instance']
+        - name: NAMESPACE
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+        - name: TRAINER_CPU
+          value: "500m"
+        - name: TRAINER_MEMORY
+          value: "2Gi"
+        - name: TRAINER_DISK
+          value: "1Gi"
+        - name: WORKER_CPU
+          value: "100m"
+        - name: WORKER_MEMORY
+          value: "512Mi"
+        - name: WORKER_DISK
+          value: "512Mi"
+        - name: IMAGE
+          value: "ray-automl-service:202305092000"
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
