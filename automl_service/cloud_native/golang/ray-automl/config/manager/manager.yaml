@@ -70,12 +70,10 @@ spec:
         - /manager
         args:
         - --leader-elect
-        image: controller:20230426171304
+        image: qstar/ray-automl:controller-20230511194159
         imagePullPolicy: IfNotPresent
         name: manager
         env:
-        - name: TIME_ZONE
-          value: "/usr/share/zoneinfo/Asia/Shanghai"
         - name: PROXY_NAME
           valueFrom:
             fieldRef:
@@ -93,13 +91,13 @@ spec:
         - name: TRAINER_DISK
           value: "1Gi"
         - name: WORKER_CPU
-          value: "100m"
+          value: "500m"
         - name: WORKER_MEMORY
           value: "512Mi"
         - name: WORKER_DISK
           value: "512Mi"
         - name: IMAGE
-          value: "ray-automl-service:202305092000"
+          value: "qstar/ray-automl:ray-automl-service-202305112103"
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
@@ -121,7 +119,7 @@ spec:
         # More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
         resources:
           limits:
-            cpu: 500m
+            cpu: 200m
             memory: 128Mi
           requests:
             cpu: 10m
